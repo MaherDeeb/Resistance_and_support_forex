@@ -14,8 +14,8 @@ consequences. the program and the results are only for educational purposes.
 @description
 
 The goal of this work is to extract the supports (S) and resistances (R) statistically using a method that I will call it "Window size method". After extracting
-S and R their strengthes will be evaluated using a statistical indicator. Support or resistance strength represents the possibility that the price is not able
-to exceed. If the S or R is strong, the probability that the price will reverce at this point is high. Otherwise we say S or R is weak.
+S and R their strengths will be evaluated using a statistical indicator. Support or resistance strength represents the possibility that the price is not able
+to exceed. If the S or R is strong, the probability that the price will reverse at this point is high. Otherwise we say S or R is weak.
 
 for a given forex or stock signal f: f=[id::int,d::date,O::float,H::float,L::Low,C::float,V::int] where id is a unique value for each , d present the date
 O is the open price, H is the highest price of the candle, L is the lowest price of the candle, the C is the close price and V is the volume. We assume that
