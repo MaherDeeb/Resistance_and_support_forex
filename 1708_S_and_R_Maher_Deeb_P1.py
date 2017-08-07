@@ -38,7 +38,7 @@ from collections import defaultdict
 
 #2.read csv file (4h time frame will be used for this example)
 
-f=pd.read_csv('USDCHF240.csv',header=None)
+f=pd.read_csv('EURUSD240.csv',header=None)
 #2.1give names to the columns
 f.columns=['date','time','O','H','L','C','V']
 #2.3the amount of the data
