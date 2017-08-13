@@ -1,4 +1,4 @@
-﻿# Resistance_and_support_forex
+# Resistance_and_support_forex
 ‣Created on Sun Aug 06 20:08:17 2017, prepared by Spyder
 
 @author: Maher Deeb
