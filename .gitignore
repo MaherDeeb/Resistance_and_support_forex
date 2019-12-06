@@ -1,0 +1,10 @@
+.idea/
+.RData
+.Rhistory
+.idea/
+otherfiles/
+rsconnect/
+server.R
+ui.R
+venv/
+*.csv
