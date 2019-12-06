@@ -1,56 +1,28 @@
-# -*- coding: utf-8 -*-
 """
-Created on Sun Aug 06 20:08:17 2017, prepared by Spyder
 
 @author: Maher Deeb
 @ Warning: the author is not responsible for any lost of money or any type of lost because of using this program or its result.
-The user is not completely responsible for all the consequences.
-The program and the results are only for educational purposes.
-
-@Title:
-   A window size method to extract and evaluate the strength of supports and resistances of Forex and
-   stocks prices for a given period "t"
-@keywords:
-    window size method, supports and resistances,Forex, stocks, statistical methods, probabilistic methods
-
-@description
-
-The goal of this work is to extract the supports (S) and resistances (R) statistically using a method that I call it
-"Window size method." After obtaining S and R, their strengths are evaluated using a statistical indicator. Support or
- resistance strength represents the possibility that the price is not able
-to exceed. If the S or R is strong, the probability that the price will reverse at this point is high. Otherwise, we say S or R is weak.
-for a given forex or stock signal f: f=[id::int,d::date,O::float,H::float,L::Low,C::float,V::int] where id is a unique value for each , d present the date
-O is the open price, H is the highest price of the candle, L is the lowest price of the candle, the C is the close price and V is the volume. We assume that
-the signal f has l data points which represnets the total number of candles.
-for a given time period t::int which represents the number of candles that should be included we are going to choose windows that will be shifted through the data
-starting from the latest value to the value l-t.
-
-Inputs: f, t, ws_min,ws_max
-outputs: S,R
-
-the implementation will be done in Python using pandas
+The user is not completely responsible for all the consequences. The program and the results are only for educational purposes.
 
 """
+
 # 1.Import libraries
 import matplotlib
 
 colors_all = list(matplotlib.colors.cnames.values())
-import pandas as pd
 import matplotlib.pyplot as plt
 from collections import defaultdict
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.metrics.pairwise import pairwise_distances_argmin
 
-# ==============================================================================
+from utils.utils import load_data
 
-# 2.read csv file (4h time frame will be used for this example)
 
-f = pd.read_csv('EURUSD1440.csv', header=None)
-# 2.1give names to the columns
-f.columns = ['date', 'time', 'O', 'H', 'L', 'C', 'V']
-# 2.3the amount of the data
-l = len(f['H'])
+def main(filename):
+    dataframe = load_data(filename)
+
+
 # ==============================================================================
 # 4. inputs
 # 4.1 considered periods = number of days * 5 candles per day
