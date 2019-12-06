@@ -149,75 +149,51 @@ def calculate_strength(resistances_supports_list,
 
 
 def scale_power(power_dict, unique_resistances_supports_list, maximum_hold_observed):
-    power_resistances_supports_list = []
+    scaled_power_resistances_supports_list = []
     power_threshold = 0
     for price_i in unique_resistances_supports_list:
         power_dict[price_i][2] = power_dict[price_i][1] * 100 / maximum_hold_observed
         if power_dict[price_i][2] > power_threshold:
-            power_resistances_supports_list.append(power_dict[price_i][2])
+            scaled_power_resistances_supports_list.append(power_dict[price_i][2])
         else:
-            power_resistances_supports_list.append(0)
-    return power_dict
+            scaled_power_resistances_supports_list.append(0)
+    return scaled_power_resistances_supports_list
 
 
 # ==============================================================================
 # 8. For visualization purposes only the resistances and supports values close to the current price will be presented
 # 8.1 current price is the close of the last candle
-cur = dataframe["close"][len(dataframe["close"]) - 1]
-# 8.2 define the range of presenting the data based on the range of price movement which is the difference between the highest and lowest value of each candle
-df_h_l = dataframe["high"] - dataframe["low"]
+
+def current_price_extractor(dataframe):
+    current_price = dataframe["close"][len(dataframe["close"]) - 1]
+    return current_price
+
+
+# 8.2 define the range of presenting the data based on the range of price movement which is the difference between
+# the highest and lowest value of each candle
+def price_movement_range(dataframe):
+    price_range = dataframe["high"] - dataframe["low"]
+    return price_range
+
+
 # 8.2.1 Histogram of the price movement can be checked to understand the results.
 # plt.hist(df_h_l)
 # 8.3 Printing the results
-fig = plt.figure()
-# 8.4 plot the result
-ax = fig.add_subplot(111)
-ax.plot([0, 100], [cur, cur], label='current price')
-ax.set_xlim(0, 100)
-ax.barh(s_tot_R_S, power_S_R, align='center',
-        color='green', ecolor='black', height=0.0001, label='resistances or supports')
-ax.set_ylim(cur - df_h_l.mean(), cur + df_h_l.mean())
-ax.set_xlabel('Strength of resistances and supports %')
-ax.set_ylabel('Price')
-ax.set_title('Current price and the closest support and resistances and their strengths')
-ax.grid(True)
-ax.legend()
-# ==============================================================================
-# 9. Apply k-mean to cluster the resistances and supports
-# 9.1 choose K
-K = 100
-init_arr = []
-for i in range(len(s_tot_R_S)):
-    init_arr.append([s_tot_R_S[i], power_S_R[i]])
-    # init_arr.append([power_S_R[i],s_tot_R_S[i]])
+def plot_resistances_supports(current_price, price_range,
+                              unique_resistances_supports_list,
+                              scaled_power_resistances_supports_list):
+    fig = plt.figure()
+    # 8.4 plot the result
+    ax = fig.add_subplot(111)
+    ax.plot([0, 100], [current_price, current_price], label='current price')
+    ax.set_xlim(0, 100)
+    ax.barh(unique_resistances_supports_list, scaled_power_resistances_supports_list, align='center',
+            color='green', ecolor='black', height=0.0001, label='resistances or supports')
+    ax.set_ylim(current_price - price_range.mean(), current_price + price_range.mean())
+    ax.set_xlabel('Strength of resistances and supports %')
+    ax.set_ylabel('Price')
+    ax.set_title('Current price and the closest support and resistances and their strengths')
+    ax.grid(True)
+    ax.legend()
 
-X = np.array(init_arr)
-kmeans = KMeans(n_clusters=K, random_state=0, n_init=500, max_iter=1000).fit(X)
 
-resu = kmeans.cluster_centers_
-
-colors = colors_all[0:K]
-
-k_means_cluster_centers = resu  # np.sort(resu, axis=0)
-k_means_labels = pairwise_distances_argmin(X, k_means_cluster_centers)
-print(resu[:, 0])
-# ==============================================================================
-fig1 = plt.figure()
-ax = fig1.add_subplot(111)
-ax.plot(resu[:, 0], resu[:, 1], '*')
-# ==============================================================================
-fig2 = plt.figure()
-
-ax = fig2.add_subplot(1, 1, 1)
-for k, col in zip(range(K), colors):
-    my_members = k_means_labels == k
-    cluster_center = k_means_cluster_centers[k]
-    ax.plot(X[my_members, 0], X[my_members, 1], '*',
-            markerfacecolor=col, markersize=2)
-    ax.plot(cluster_center[0], cluster_center[1], 'o', markerfacecolor=col,
-            markeredgecolor='k', markersize=5)
-ax.set_title('KMeans')
-ax.set_xticks(())
-ax.set_yticks(())
-# plt.text(-3.5, 1.8,  'train time: %.2fs\ninertia: %f' % (
-#    t_batch, k_means.inertia_))
