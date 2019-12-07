@@ -6,6 +6,7 @@ The user is not completely responsible for all the consequences. The program and
 
 """
 
+import os
 from utils.utils import load_data
 from resistances_supports_extractor.window_method import extract_resistances_supports
 from resistances_supports_extractor.power_calculator import scale_power, calculate_strength
@@ -13,13 +14,13 @@ from results_plotter.results_plotter import plot_resistances_supports
 
 
 def main(filename, inputs):
-    number_of_rows = inputs["number_of_rows"]
     number_of_candles = inputs["number_of_candles"]
     minimum_window_size = inputs["minimum_window_size"]
     maximum_window_size = inputs["maximum_window_size"]
     tolerance = inputs["tolerance"]
 
     dataframe = load_data(filename)
+    number_of_rows = dataframe.shape[0]
 
     unique_resistances_supports_list = extract_resistances_supports(number_of_rows,
                                                                     number_of_candles,
@@ -37,21 +38,19 @@ def main(filename, inputs):
                                                          unique_resistances_supports_list,
                                                          maximum_hold_observed)
 
+    plot_resistances_supports(dataframe,
+                              unique_resistances_supports_list,
+                              scaled_power_resistances_supports_list)
+
     return unique_resistances_supports_list, scaled_power_resistances_supports_list
 
 
 if __name__ == '__main__':
-    # Inputs
-    # considered periods = number of days * 5 candles per day if the frequency is 4 hours
-    # number_of_candles = 60 * 5
-    # the minimum and the maximum size of the window that will explore the data
-    # minimum_window_size, maximum_window_size = 5, 75
+    input_parameters = dict(number_of_candles=60,
+                            minimum_window_size=5,
+                            maximum_window_size=20,
+                            tolerance=0.001)
 
-    # define the power dict
-    # p = {}
-    # initial value of maximum hold: we compare other resistances and supports values based on it
-    # max_h = 0
-    # define the accuracy in points: it is important to calculate when the price holds and when not
-    # accu = 0.0005
+    path = os.path.join("data", "EURUSD1440.csv")
 
-    main()
+    unique_resistances_supports_list, scaled_power_resistances_supports_list = main(path, input_parameters)

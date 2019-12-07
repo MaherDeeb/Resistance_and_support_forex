@@ -8,3 +8,7 @@ server.R
 ui.R
 venv/
 *.csv
+resistances_supports_extractor/__pycache__/
+results_plotter/__pycache__/
+utils/__pycache__/
+

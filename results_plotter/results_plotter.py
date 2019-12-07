@@ -20,9 +20,11 @@ def price_movement_range(dataframe):
 # 8.2.1 Histogram of the price movement can be checked to understand the results.
 # plt.hist(df_h_l)
 # 8.3 Printing the results
-def plot_resistances_supports(current_price, price_range,
+def plot_resistances_supports(dataframe,
                               unique_resistances_supports_list,
                               scaled_power_resistances_supports_list):
+    current_price = current_price_extractor(dataframe)
+    price_range = price_movement_range(dataframe)
     fig = plt.figure()
     # 8.4 plot the result
     ax = fig.add_subplot(111)
