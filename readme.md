@@ -16,9 +16,11 @@ f: f=[id:int, d: date,O: open float,H: high float,L:Low float,C: close float,V: 
 
 where id is a unique value for each row
 
-We assume that the signal f has n data points which represent the total number of candles. 
-For a given time period (t: int) which represents the number of considered candles we choose
-windows that will be shifted through the data starting from the latest value to the value l-t.
+I assume that the signal `f` has `n` data points which represent the total number of candles. 
+For a given time period (`t: int`) which represents the number of considered candles I choose
+windows that will be shifted through the data starting from the latest value to the value `n-t`.
+I calculate the highest and lowest prices that are visited at the considered `window_i`. If the price
+reveres when reaching those prices, I consider those prices as strong prices.
 
 Inputs:
 * filename: CSV file that contains the data.
@@ -30,5 +32,3 @@ Inputs:
 outputs: 
 * Supports and resistances list
 * The strengths of the supports and the resistances scaled between 0 and 100%
-
-"""
