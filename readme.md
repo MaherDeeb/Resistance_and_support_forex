@@ -21,14 +21,14 @@ For a given time period (t: int) which represents the number of considered candl
 windows that will be shifted through the data starting from the latest value to the value l-t.
 
 Inputs:
-
-* f
-* t 
-* ws_min
-* ws_max
+* filename: CSV file that contains the data.
+* number_of_candles: how many candles that the method considers when extracting the resistances and the supports. The technique counts the considered candles from the current candle
+* minimum_window_size: the smaller the window is, the more local the results are.
+* maximum_window_size: the larger the window is, the more global the results are.
+* tolerance: to consider the price differences between bid and buy.
     
 outputs: 
-* S
-* R
+* Supports and resistances list
+* The strengths of the supports and the resistances scaled between 0 and 100%
 
 """
